@@ -1,0 +1,14 @@
+<sounds root="sfx/">
+  <sound name="Clown's Horn 1">
+    <sample weight="1" path="clowns_horn_1.wav" />
+  </sound>
+  <sound name="Clown's Horn 2">
+    <sample weight="1" path="clowns_horn_2.wav" />
+  </sound>
+    <sound name="Clown's Horn 3">
+        <sample weight="1" path="clowns_horn_3.wav" />
+    </sound>
+    <sound name="Clown's Horn 4">
+        <sample weight="1" path="clowns_horn_4.wav" />
+    </sound>
+</sounds>
