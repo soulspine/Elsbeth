@@ -1,6 +1,11 @@
-# Clown's Horn
-### Sprite
-@moona_star on discord
-### Sfx
-https://www.youtube.com/watch?v=z7rxdZSgW7k
-https://www.youtube.com/watch?v=DJge_WQZJ4I
+### Ideas
+by @moona_star
+
+### Sprites
+by @terri_versh
+
+### Code
+by @soulspine
+
+### SFX sources
+- Clown's Horn -> [SFX1](https://www.youtube.com/watch?v=z7rxdZSgW7k), [SFX2](https://www.youtube.com/watch?v=DJge_WQZJ4I)
