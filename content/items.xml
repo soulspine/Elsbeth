@@ -1,6 +1,9 @@
 <items gfxroot="gfx/items/" deathanim2="gfx/custom_death_items.anm2" version="1">
     <active id="0" name="Clown's Horn" gfx="clowns_horn.png" description="You're silly now" quality="3" maxcharges="2"/>
 
+    <trinket id="0" name="Clown's Shoes" gfx="clowns_shoes.png" description="Honk while you walk" cache="speed"/>
+
+    <!--  TRANSFORMATION PIECES, DO NOT TOUCH  -->
     <passive id="0" name="guppyFormPiece" description="does nothing" quality="0" hidden="1" tags="quest noeden nokeeper nodaily nochallenge nocantrip nolostbr nogreed guppy"/>
     <passive id="0" name="lordOfTheFliesFormPiece" description="does nothing" quality="0" hidden="1" tags="quest noeden nokeeper nodaily nochallenge nocantrip nolostbr nogreed fly"/>
     <passive id="0" name="mushroomFormPiece" description="does nothing" quality="0" hidden="1" tags="quest noeden nokeeper nodaily nochallenge nocantrip nolostbr nogreed mushroom"/>
