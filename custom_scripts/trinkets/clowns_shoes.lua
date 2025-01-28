@@ -1,7 +1,5 @@
 local CLOWNS_SHOES_ID = Isaac.GetTrinketIdByName("Clown's Shoes")
 
-print("Loading Clown's Shoes...")
-
 local MOVE_SPEED_DEBUFF = 0.2
 local DAMAGE_MULTIPLIER = 1.5
 
@@ -63,5 +61,3 @@ end
 
 MOD:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, onCacheEval)
 MOD:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, onEntityDMG)
-
-print("Clown's Shoes loaded!")

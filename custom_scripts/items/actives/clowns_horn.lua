@@ -1,14 +1,12 @@
 local CLOWNS_HORN_ID = Isaac.GetItemIdByName("Clown's Horn")
 
-print("Loading Clown's Horn...")
-
 local TRANSFORMATIONS_PER_USE = 2
 local DAMAGE_MULTIPLIER = 1.2
 
 local sfx = SFXManager()
 
 if EID then
-    EID:addCollectible(CLOWNS_HORN_ID, "Grants " .. TRANSFORMATIONS_PER_USE .. " random yet unobtained transformations.#If there are no transformations to grant, multiplies {{Damage}} damage by " .. DAMAGE_MULTIPLIER .. "x for each transformation it would've granted.#Cannot grant {{Stompy}} Stompy or {{Adult}} Adult", "Clown's Horn")
+    EID:addCollectible(CLOWNS_HORN_ID, "Grants " .. TRANSFORMATIONS_PER_USE .. " random yet unobtained transformations.#If there are no transformations to grant, multiplies {{Damage}} damage by " .. DAMAGE_MULTIPLIER .. "x for each transformation it would've granted.#Instant pickup / health gain happens only on the first achievement.", "Clown's Horn")
 end
 
 local GUPPY_FORM_PIECE_ID = Isaac.GetItemIdByName("guppyFormPiece")
@@ -41,9 +39,38 @@ local formItems = {
     [PlayerForm.PLAYERFORM_SPIDERBABY] = SPIDERBABY_FORM_PIECE_ID
 }
 
+local transformationToString = {
+    [PlayerForm.PLAYERFORM_GUPPY] = "GUPPY",
+    [PlayerForm.PLAYERFORM_LORD_OF_THE_FLIES] = "BELZEBUB",
+    [PlayerForm.PLAYERFORM_MUSHROOM] = "FUN GUY",
+    [PlayerForm.PLAYERFORM_ANGEL] = "SERAPHIM",
+    [PlayerForm.PLAYERFORM_BOB] = "BOB",
+    [PlayerForm.PLAYERFORM_DRUGS] = "SPUN",
+    [PlayerForm.PLAYERFORM_MOM] = "MOM",
+    [PlayerForm.PLAYERFORM_BABY] = "CONJOINED",
+    [PlayerForm.PLAYERFORM_EVIL_ANGEL] = "LEVIATHAN",
+    [PlayerForm.PLAYERFORM_POOP] = "OH CRAP",
+    [PlayerForm.PLAYERFORM_BOOK_WORM] = "BOOKWORM",
+    [PlayerForm.PLAYERFORM_SPIDERBABY] = "SPIDER BABY"
+}
+
+---@param player EntityPlayer
+local function canCrushRocks(player)
+    local effects = player:GetEffects()
+    return player:HasCollectible(CollectibleType.COLLECTIBLE_THUNDER_THIGHS) or player:HasCollectible(CollectibleType.COLLECTIBLE_LEO) or effects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_LEO) or effects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_THUNDER_THIGHS) or  effects:HasCollectibleEffect(CollectibleType.COLLECTIBLE_MEGA_MUSH) or player:HasPlayerForm(PlayerForm.PLAYERFORM_STOMPY)
+end
+
+---@param player EntityPlayer
+local function hasSuperBum(player)
+    return (player:HasCollectible(CollectibleType.COLLECTIBLE_KEY_BUM) and player:HasCollectible(CollectibleType.COLLECTIBLE_DARK_BUM) and player:HasCollectible(CollectibleType.COLLECTIBLE_BUM_FRIEND)) or Isaac.CountEntities(player, EntityType.ENTITY_FAMILIAR, FamiliarVariant.SUPER_BUM) > 0
+end
+
 local function onNewRoomEnter()
     for playerID = 0, Game():GetNumPlayers() - 1 do
         local player = Isaac.GetPlayer(playerID)
+        if not hasSuperBum(player) then
+            player:CheckFamiliar(FamiliarVariant.SUPER_BUM, 0, RNG())
+        end
         for _, formItemID in pairs(formItems) do
             while player:HasCollectible(formItemID) do
                 player:RemoveCollectible(formItemID)
@@ -69,6 +96,18 @@ local function clownsHornActive(_, _, rng, player, _, _, _)
         ::continue::
     end
 
+    -- add stompy manually
+    if not canCrushRocks(player) then
+        numberOfValidForms = numberOfValidForms + 1
+        table.insert(validForms, "STOMPY")
+    end
+
+    -- add superbum manually
+    if not hasSuperBum(player) then
+        numberOfValidForms = numberOfValidForms + 1
+        table.insert(validForms, "SUPERBUM")
+    end
+
     --print("numberOfValidForms: " .. numberOfValidForms)
 
     if numberOfValidForms < TRANSFORMATIONS_PER_USE then
@@ -78,21 +117,40 @@ local function clownsHornActive(_, _, rng, player, _, _, _)
     end
 
     if numberOfValidForms > 0 then
+        local hud = Game():GetHUD()
+        local splashTextElements = {}
         for i = 1, TRANSFORMATIONS_PER_USE do
             if numberOfValidForms == 0 then
                 break
             end
             local rand = rng:RandomInt(numberOfValidForms) + 1
-            for _ = 1, 3 do
-                player:AddCollectible(formItems[validForms[rand]])
+            local form = validForms[rand]
+            local effects = player:GetEffects()
+            
+
+            if formItems[form] ~= nil then
+                for _ = 1, 3 do
+                    player:AddCollectible(formItems[form])
+                end
+                table.insert(splashTextElements, transformationToString[form])
+            else
+                if form == "SUPERBUM" then
+                    player:CheckFamiliar(FamiliarVariant.SUPER_BUM, 1, rng)
+                elseif form == "STOMPY" then
+                    effects:AddCollectibleEffect(CollectibleType.COLLECTIBLE_LEO, false)
+                end
+
+                table.insert(splashTextElements, form)
             end
+
             table.remove(validForms, rand)
             numberOfValidForms = numberOfValidForms - 1
         end
+        hud:ShowItemText(table.concat(splashTextElements, ", "))
     end
 
+    -- play sound
     local soundID = Isaac.GetSoundIdByName("Clown's Horn " .. tostring(rng:RandomInt(4) + 1))
-
     local pitch = (rng:RandomInt(40) + 80)/100
 
     sfx:Play(soundID, 1, 0, false, pitch)
@@ -101,5 +159,3 @@ end
 
 MOD:AddCallback(ModCallbacks.MC_USE_ITEM, clownsHornActive, CLOWNS_HORN_ID)
 MOD:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, onNewRoomEnter)
-
-print("Clown's Horn loaded!")

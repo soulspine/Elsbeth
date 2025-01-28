@@ -1,3 +1,6 @@
+# Known issues
+
+# Credits
 ### Ideas
 by @moona_star
 
