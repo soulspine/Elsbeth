@@ -44,60 +44,21 @@ end
 ---@param sourceRef EntityRef
 ---@param countdownFrames integer
 local function onEntityDMG(_, entity, amount, damageFlags, sourceRef, countdownFrames)
-    --print("Source type: " .. sourceRef.Type)
-    --print("Fake flag: " .. (damageFlags & DamageFlag.DAMAGE_FAKE))
-    if entity.Type == EntityType.ENTITY_PLAYER or damageFlags & DamageFlag.DAMAGE_FAKE == DamageFlag.DAMAGE_FAKE then
-        return
-    end
-
-    if sourceRef.Entity == nil then
-        return
-    end
-
-    local player = nil
-
-    if sourceRef.Type == EntityType.ENTITY_PLAYER then
-        player = sourceRef.Entity:ToPlayer()
-    else
-        player = sourceRef.Entity.Parent:ToPlayer()
-    end
-
-    if player == nil then
-        player = sourceRef.Entity.Parent:ToPlayer()
-    end
-
-    if player == nil then
-        return
-    end
-
-    local npc = entity:ToNPC()
-
-    if npc == nil then
-        return
-    end
-
-    if player:HasTrinket(CLOWNS_SHOES_ID) then
-        --print("Player has Clown's Shoes")
-        local eligibleForBuff = false
-
-        for _, effect in pairs(validStatusEffects) do
-            if npc:HasEntityFlags(effect) then
-                eligibleForBuff = true
-                break
+    if entity:IsVulnerableEnemy() and not (damageFlags & DamageFlag.DAMAGE_FAKE == DamageFlag.DAMAGE_FAKE) then
+        local player = sourceRef.Entity and sourceRef.Entity:ToPlayer() or (sourceRef.Entity and sourceRef.Entity.Parent and sourceRef.Entity.Parent:ToPlayer())
+        if player and player:HasTrinket(CLOWNS_SHOES_ID) then
+            local npc = entity:ToNPC()
+            if npc and npc:IsActiveEnemy(false) then
+                for _, effect in pairs(validStatusEffects) do
+                    if npc:HasEntityFlags(effect) then
+                        --print("Damage buffed hit")
+                        npc:TakeDamage(DAMAGE_MULTIPLIER * amount, damageFlags | DamageFlag.DAMAGE_FAKE, EntityRef(player), countdownFrames)
+                        return false
+                    end
+                end
             end
         end
-
-        if eligibleForBuff then
-            --print("Damage buffed hit")
-            entity:TakeDamage(DAMAGE_MULTIPLIER*amount, damageFlags | DamageFlag.DAMAGE_FAKE, EntityRef(player), countdownFrames)
-            return false
-        end
-        
     end
-
-
-
-    
 end
 
 MOD:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, onCacheEval)
