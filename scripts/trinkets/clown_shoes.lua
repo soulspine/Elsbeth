@@ -1,10 +1,10 @@
-local CLOWNS_SHOES_ID = Isaac.GetTrinketIdByName("Clown's Shoes")
+local CLOWN_SHOES_ID = Isaac.GetTrinketIdByName("Clown's Shoes")
 
 local MOVE_SPEED_DEBUFF = 0.2
 local DAMAGE_MULTIPLIER = 1.5
 
 if EID then
-    EID:addTrinket(CLOWNS_SHOES_ID, "{{ArrowUp}} Enemies with status effects applied to them take " .. DAMAGE_MULTIPLIER .. "x more damage.#{{ArrowDown}} -" .. MOVE_SPEED_DEBUFF .." speed.", "Clown's Shoes")
+    EID:addTrinket(CLOWN_SHOES_ID, "{{ArrowUp}} Enemies with status effects applied to them take " .. DAMAGE_MULTIPLIER .. "x more damage.#{{ArrowDown}} -" .. MOVE_SPEED_DEBUFF .." speed.", "Clown Shoes")
 end
 
 local validStatusEffects = {}
@@ -29,12 +29,13 @@ table.insert(validStatusEffects, EntityFlag.FLAG_WEAKNESS)
 local function onCacheEval(_, player, cacheFlag)
     if cacheFlag & CacheFlag.CACHE_SPEED == CacheFlag.CACHE_SPEED then
         --print("Cache Speed Eval")
-        if player:HasTrinket(CLOWNS_SHOES_ID) then
+        if player:HasTrinket(CLOWN_SHOES_ID) then
             --print("Player has Clown's Shoes")
             player.MoveSpeed = player.MoveSpeed - MOVE_SPEED_DEBUFF
         end
     end
 end
+MOD:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, onCacheEval)
 
 ---@param entity Entity
 ---@param amount number
@@ -44,7 +45,7 @@ end
 local function onEntityDMG(_, entity, amount, damageFlags, sourceRef, countdownFrames)
     if entity:IsVulnerableEnemy() and not (damageFlags & DamageFlag.DAMAGE_FAKE == DamageFlag.DAMAGE_FAKE) then
         local player = sourceRef.Entity and sourceRef.Entity:ToPlayer() or (sourceRef.Entity and sourceRef.Entity.Parent and sourceRef.Entity.Parent:ToPlayer())
-        if player and player:HasTrinket(CLOWNS_SHOES_ID) then
+        if player and player:HasTrinket(CLOWN_SHOES_ID) then
             local npc = entity:ToNPC()
             if npc and npc:IsActiveEnemy(false) then
                 for _, effect in pairs(validStatusEffects) do
@@ -58,6 +59,4 @@ local function onEntityDMG(_, entity, amount, damageFlags, sourceRef, countdownF
         end
     end
 end
-
-MOD:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, onCacheEval)
 MOD:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, onEntityDMG)

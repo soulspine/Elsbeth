@@ -1,0 +1,27 @@
+<AnimatedActor>
+	<Info CreatedBy="soulspine" CreatedOn="04/02/2025 20:14:06" Version="40" Fps="30"/>
+	<Content>
+		<Spritesheets>
+			<Spritesheet Path="elsbeth\charactername_elsbeth.png" Id="0"/>
+		</Spritesheets>
+		<Layers>
+			<Layer Name="Name" Id="0" SpritesheetId="0"/>
+		</Layers>
+		<Nulls/>
+		<Events/>
+	</Content>
+	<Animations DefaultAnimation="Elsbeth">
+		<Animation Name="Elsbeth" FrameNum="1" Loop="true">
+			<RootAnimation>
+				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+			</RootAnimation>
+			<LayerAnimations>
+				<LayerAnimation LayerId="0" Visible="true">
+					<Frame XPosition="17" YPosition="82" XPivot="32" YPivot="8" XCrop="4" YCrop="4" Width="71" Height="22" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+				</LayerAnimation>
+			</LayerAnimations>
+			<NullAnimations/>
+			<Triggers/>
+		</Animation>
+	</Animations>
+</AnimatedActor>

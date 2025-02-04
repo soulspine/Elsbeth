@@ -1,4 +1,4 @@
-local CLOWNS_HORN_ID = Isaac.GetItemIdByName("Clown's Horn")
+local CLOWN_HORN_ID = Isaac.GetItemIdByName("Clown's Horn")
 
 local TRANSFORMATIONS_PER_USE = 2
 local DAMAGE_MULTIPLIER = 1.2
@@ -6,7 +6,7 @@ local DAMAGE_MULTIPLIER = 1.2
 local sfx = SFXManager()
 
 if EID then
-    EID:addCollectible(CLOWNS_HORN_ID, "Grants " .. TRANSFORMATIONS_PER_USE .. " random yet unobtained transformations.#If there are no transformations to grant, multiplies {{Damage}} damage by " .. DAMAGE_MULTIPLIER .. "x for each transformation it would've granted.#Instant pickup / health gain happens only on the first achievement.", "Clown's Horn")
+    EID:addCollectible(CLOWN_HORN_ID, "Grants " .. TRANSFORMATIONS_PER_USE .. " random yet unobtained transformations.#If there are no transformations to grant, multiplies {{Damage}} damage by " .. DAMAGE_MULTIPLIER .. "x for each transformation it would've granted.#Instant pickup / health gain happens only on the first achievement.", "Clown Horn")
 end
 
 local GUPPY_FORM_PIECE_ID = Isaac.GetItemIdByName("guppyFormPiece")
@@ -79,9 +79,17 @@ local function onNewRoomEnter()
     end
 end
 
+---@param itemId CollectibleType
 ---@param rng RNG
 ---@param player EntityPlayer
-local function clownsHornActive(_, _, rng, player, _, _, _)
+---@param useFlags UseFlag
+---@param activeSlot ActiveSlot
+---@param customVarData integer
+local function clownsHornActive(_, itemId, rng, player, useFlags, activeSlot, customVarData)
+    if useFlags & UseFlag.USE_NOANIM == UseFlag.USE_NOANIM then
+        return false
+    end
+    
     local validForms = {}
     local numberOfValidForms = 0
 
@@ -150,12 +158,12 @@ local function clownsHornActive(_, _, rng, player, _, _, _)
     end
 
     -- play sound
-    local soundID = Isaac.GetSoundIdByName("Clown's Horn " .. tostring(rng:RandomInt(4) + 1))
+    local soundID = Isaac.GetSoundIdByName("Clown Horn " .. tostring(rng:RandomInt(4) + 1))
     local pitch = (rng:RandomInt(40) + 80)/100
 
     sfx:Play(soundID, 1, 0, false, pitch)
     return true
 end
 
-MOD:AddCallback(ModCallbacks.MC_USE_ITEM, clownsHornActive, CLOWNS_HORN_ID)
+MOD:AddCallback(ModCallbacks.MC_USE_ITEM, clownsHornActive, CLOWN_HORN_ID)
 MOD:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, onNewRoomEnter)

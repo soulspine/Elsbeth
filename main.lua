@@ -1,4 +1,7 @@
+---@type ModReference
 MOD = RegisterMod("Elsbeth", 1)
 
-include("custom_scripts.items.actives.clowns_horn")
-include("custom_scripts.trinkets.clowns_shoes")
+include("scripts.character_init")
+
+include("scripts.items.actives.clown_horn")
+include("scripts.trinkets.clown_shoes")
