@@ -1,4 +1,4 @@
-local CLOWN_HORN_ID = Isaac.GetItemIdByName("Clown's Horn")
+local CLOWN_HORN_ID = Isaac.GetItemIdByName("Clown Horn")
 
 local TRANSFORMATIONS_PER_USE = 2
 local DAMAGE_MULTIPLIER = 1.2
@@ -85,7 +85,7 @@ end
 ---@param useFlags UseFlag
 ---@param activeSlot ActiveSlot
 ---@param customVarData integer
-local function clownsHornActive(_, itemId, rng, player, useFlags, activeSlot, customVarData)
+local function clownHornActive(_, itemId, rng, player, useFlags, activeSlot, customVarData)
     if useFlags & UseFlag.USE_NOANIM == UseFlag.USE_NOANIM then
         return false
     end
@@ -165,5 +165,5 @@ local function clownsHornActive(_, itemId, rng, player, useFlags, activeSlot, cu
     return true
 end
 
-MOD:AddCallback(ModCallbacks.MC_USE_ITEM, clownsHornActive, CLOWN_HORN_ID)
+MOD:AddCallback(ModCallbacks.MC_USE_ITEM, clownHornActive, CLOWN_HORN_ID)
 MOD:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, onNewRoomEnter)
