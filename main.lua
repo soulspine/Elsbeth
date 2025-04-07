@@ -1,7 +1,7 @@
 ---@type ModReference
-MOD = RegisterMod("Elsbeth", 1)
+Elsbeth = RegisterMod("Elsbeth", 1)
 
-include("scripts.character_init")
+include("scripts.character")
 
 include("scripts.items.actives.clown_horn")
 include("scripts.trinkets.clown_shoes")

@@ -1,7 +1,7 @@
 <items gfxroot="gfx/items/" deathanm2="gfx/custom_death_items.anm2" version="1">
-    <active id="0" name="Clown Horn" gfx="clown_horn.png" description="You're silly now" quality="3" maxcharges="2"/>
+    <active id="0" name="Clown Horn" gfx="clown_horn.png" description="You're silly now!" quality="3" maxcharges="2"/>
 
-    <trinket id="0" name="Clown Shoes" gfx="clown_shoes.png" description="Honk while you walk" cache="speed"/>
+    <trinket id="0" name="Clown Shoes" gfx="clown_shoes.png" description="Dont trip!" cache="speed"/>
 
     <!--  TRANSFORMATION PIECES, DO NOT TOUCH  -->
     <passive id="1" name="guppyFormPiece" description="does nothing" quality="0" hidden="1" tags="quest noeden nokeeper nodaily nochallenge nocantrip nolostbr nogreed guppy"/>

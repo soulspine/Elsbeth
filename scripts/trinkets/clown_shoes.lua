@@ -35,7 +35,7 @@ local function onCacheEval(_, player, cacheFlag)
         end
     end
 end
-MOD:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, onCacheEval)
+Elsbeth:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, onCacheEval)
 
 ---@param entity Entity
 ---@param amount number
@@ -59,4 +59,4 @@ local function onEntityDMG(_, entity, amount, damageFlags, sourceRef, countdownF
         end
     end
 end
-MOD:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, onEntityDMG)
+Elsbeth:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, onEntityDMG)

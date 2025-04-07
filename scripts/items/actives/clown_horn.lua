@@ -165,5 +165,5 @@ local function clownHornActive(_, itemId, rng, player, useFlags, activeSlot, cus
     return true
 end
 
-MOD:AddCallback(ModCallbacks.MC_USE_ITEM, clownHornActive, CLOWN_HORN_ID)
-MOD:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, onNewRoomEnter)
+Elsbeth:AddCallback(ModCallbacks.MC_USE_ITEM, clownHornActive, CLOWN_HORN_ID)
+Elsbeth:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, onNewRoomEnter)
